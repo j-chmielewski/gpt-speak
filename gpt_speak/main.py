@@ -1,14 +1,19 @@
+import os
 from typing import Dict
 from revChatGPT.revChatGPT import Chatbot
 import click
 import whisper
 import sounddevice as sd
 import soundfile as sf
+from gtts import gTTS
 
 
-REC_FILE = "/tmp/gptspeak.wav"
+REC_FILE = "/tmp/gptrec.wav"
+SPK_FILE = "/tmp/gptspk.wav"
+LANG = "en"
+PLAYER = "mpg123 -q"
 SAMPLE_RATE = 44100
-REC_DURATION = 3
+REC_DURATION = 10
 
 model = whisper.load_model("small")
 
@@ -31,7 +36,10 @@ def get_response(chatbot: Chatbot, msg: str) -> Dict:
 
 
 def speak(msg: str) -> None:
-    print(msg)
+    print("Speaking")
+    spk = gTTS(text=msg, lang=LANG, slow=False)
+    spk.save(SPK_FILE)
+    os.system(f"{PLAYER} {SPK_FILE}")
 
 
 def init_bot(token) -> Chatbot:
@@ -40,15 +48,15 @@ def init_bot(token) -> Chatbot:
     }
     return Chatbot(config, conversation_id=None)
 
+
 @click.command()
 @click.option("--token", help="Session token from gpt chat cookie", required=True)
 def main(token: str):
     bot = init_bot(token)
-    while True:
-        listen()
-        msg = transcribe()
-        response = get_response(bot, msg)
-        speak(response["message"])
+    listen()
+    msg = transcribe()
+    response = get_response(bot, msg)
+    speak(response["message"])
 
 
 if __name__ == "__main__":
