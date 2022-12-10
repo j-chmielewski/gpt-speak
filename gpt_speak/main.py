@@ -1,4 +1,4 @@
-import os
+from playsound import playsound
 from typing import Dict
 from revChatGPT.revChatGPT import Chatbot
 import click
@@ -11,7 +11,6 @@ from gtts import gTTS
 REC_FILE = "/tmp/gptrec.wav"
 SPK_FILE = "/tmp/gptspk.wav"
 LANG = "en"
-PLAYER = "mpg123 -q"
 SAMPLE_RATE = 44100
 REC_DURATION = 10
 
@@ -28,18 +27,23 @@ def listen() -> None:
 def transcribe() -> str:
     print("Transcribing")
     result = model.transcribe(REC_FILE)
-    return str(result.get("text", ""))
+    transcription = str(result.get("text", ""))
+    print("Transcription:", transcription)
+    return transcription
 
 
 def get_response(chatbot: Chatbot, msg: str) -> Dict:
-    return chatbot.get_chat_response(msg, output="text")
+    print("Querying AI overlords")
+    response = chatbot.get_chat_response(msg, output="text")
+    print("They have spoken:", response["message"])
+    return response
 
 
 def speak(msg: str) -> None:
     print("Speaking")
     spk = gTTS(text=msg, lang=LANG, slow=False)
     spk.save(SPK_FILE)
-    os.system(f"{PLAYER} {SPK_FILE}")
+    playsound(f"{SPK_FILE}")
 
 
 def init_bot(token) -> Chatbot:
@@ -50,7 +54,7 @@ def init_bot(token) -> Chatbot:
 
 
 @click.command()
-@click.option("--token", help="Session token from gpt chat cookie", required=True)
+@click.option("--token", help="Token from gpt chat cookie", required=True)
 def main(token: str):
     bot = init_bot(token)
     listen()

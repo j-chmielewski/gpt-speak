@@ -298,6 +298,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "playsound"
+version = "1.3.0"
+description = "Pure Python, cross platform, single function module with no dependencies for playing sounds."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
@@ -611,7 +619,7 @@ resolved_reference = "0b5dcfdef7ec04250b76e13f1630e32b0935ce76"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "1bfee7db93cd11b0bd381b2b0da5e5d40117bb95a345fbbf386247f8bc8d9aaf"
+content-hash = "40c4e660811ebd4aa7598ef59e021a89400af80647f881209eba9aa5b1bce763"
 
 [metadata.files]
 anyio = []
@@ -641,6 +649,7 @@ nvidia-cuda-runtime-cu11 = []
 nvidia-cudnn-cu11 = []
 openaiauth = []
 packaging = []
+playsound = []
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
