@@ -7,6 +7,8 @@ import sounddevice as sd
 import soundfile as sf
 from gtts import gTTS
 
+from gpt_speak.recording import listen
+
 
 REC_FILE = "/tmp/gptrec.wav"
 SPK_FILE = "/tmp/gptspk.wav"
@@ -17,11 +19,11 @@ REC_DURATION = 10
 model = whisper.load_model("small")
 
 
-def listen() -> None:
-    print("Recording")
-    myrecording = sd.rec(int(REC_DURATION * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=2)
-    sd.wait()
-    sf.write(REC_FILE, myrecording, SAMPLE_RATE)
+# def listen() -> None:
+#     print("Recording")
+#     myrecording = sd.rec(int(REC_DURATION * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=2)
+#     sd.wait()
+#     sf.write(REC_FILE, myrecording, SAMPLE_RATE)
 
 
 def transcribe() -> str:

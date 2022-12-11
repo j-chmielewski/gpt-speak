@@ -325,6 +325,17 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
+name = "pyaudio"
+version = "0.2.12"
+description = "Cross-platform audio I/O with PortAudio"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+test = ["numpy"]
+
+[[package]]
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
@@ -619,7 +630,7 @@ resolved_reference = "0b5dcfdef7ec04250b76e13f1630e32b0935ce76"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "40c4e660811ebd4aa7598ef59e021a89400af80647f881209eba9aa5b1bce763"
+content-hash = "6f05ed31528d7233f72fa1168fd0208c525baa81771eb5d3056fef0cb335acb9"
 
 [metadata.files]
 anyio = []
@@ -658,6 +669,7 @@ py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
+pyaudio = []
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
