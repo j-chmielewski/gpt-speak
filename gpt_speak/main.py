@@ -1,10 +1,10 @@
 from playsound import playsound
+from pydub import AudioSegment
 from typing import Dict
 from revChatGPT.revChatGPT import Chatbot
+import sounddevice
 import click
 import whisper
-import sounddevice as sd
-import soundfile as sf
 from gtts import gTTS
 
 from gpt_speak.recording import listen
@@ -12,18 +12,10 @@ from gpt_speak.recording import listen
 
 REC_FILE = "/tmp/gptrec.wav"
 SPK_FILE = "/tmp/gptspk.wav"
-LANG = "en"
 SAMPLE_RATE = 44100
 REC_DURATION = 10
 
 model = whisper.load_model("small")
-
-
-# def listen() -> None:
-#     print("Recording")
-#     myrecording = sd.rec(int(REC_DURATION * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=2)
-#     sd.wait()
-#     sf.write(REC_FILE, myrecording, SAMPLE_RATE)
 
 
 def transcribe() -> str:
@@ -41,10 +33,14 @@ def get_response(chatbot: Chatbot, msg: str) -> Dict:
     return response
 
 
-def speak(msg: str) -> None:
+def speak(msg: str, lang: str) -> None:
     print("Speaking")
-    spk = gTTS(text=msg, lang=LANG, slow=False)
+    spk = gTTS(text=msg, lang=lang, slow=False)
     spk.save(SPK_FILE)
+    # Speed up & play audio
+    audio = AudioSegment.from_file(SPK_FILE)
+    faster_audio = audio.speedup(playback_speed=1.5)
+    faster_audio.export(SPK_FILE, format="wav")
     playsound(f"{SPK_FILE}")
 
 
@@ -57,12 +53,13 @@ def init_bot(token) -> Chatbot:
 
 @click.command()
 @click.option("--token", help="Token from gpt chat cookie", required=True)
-def main(token: str):
+@click.option("--lang", help="Language to use for speech synthesis", default="en")
+def main(token: str, lang: str):
     bot = init_bot(token)
-    listen()
-    msg = transcribe()
-    response = get_response(bot, msg)
-    speak(response["message"])
+    for _ in listen():
+        msg = transcribe()
+        response = get_response(bot, msg)
+        speak(response["message"], lang)
 
 
 if __name__ == "__main__":
